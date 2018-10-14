@@ -1,0 +1,12 @@
+Source: ros-kinetic-fiducial-slam
+Section: misc
+Priority: extra
+Maintainer: Jim Vaughan <jimv@mrjim.com>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-cv-bridge, ros-kinetic-dynamic-reconfigure, ros-kinetic-fiducial-msgs, ros-kinetic-image-transport, ros-kinetic-opencv3, ros-kinetic-roscpp, ros-kinetic-sensor-msgs, ros-kinetic-tf2, ros-kinetic-tf2-geometry-msgs, ros-kinetic-tf2-ros, ros-kinetic-visualization-msgs
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-fiducial-slam
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-cv-bridge, ros-kinetic-dynamic-reconfigure, ros-kinetic-fiducial-msgs, ros-kinetic-image-transport, ros-kinetic-opencv3, ros-kinetic-roscpp, ros-kinetic-sensor-msgs, ros-kinetic-tf2, ros-kinetic-tf2-geometry-msgs, ros-kinetic-tf2-ros, ros-kinetic-visualization-msgs
+Description: ROS node to build a 3D map of fiducials and estimate robot pose from fiducial transforms
