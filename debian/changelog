@@ -1,0 +1,142 @@
+ros-kinetic-aruco-detect (0.11.0-1xenial) xenial; urgency=high
+
+  * Compatibilty with Melodic
+    
+    remove opencv3 dependancy, opencv3 is no longer a package in melodic, so we use cv_bridge
+    
+    Fix build on OpenCV 3.2
+  * Import empy with full path to avoid pip conflict
+  * Use subprocess for cairosvg to avoid lack of python2 support
+  * call genMarker with correct arguments with no joblib
+  * Check ignoreID's in TF publishing
+  * Added topic that enables/disables Aruco detections
+  * Added rosdeps for cairo and joblib
+  * Add params for determining weighting of observations; prevent compiler warnings
+  * add cli argument for paper size to create markers
+  * Contributors: Jack Kilian, Jim Vaughan, Rohan Agrawal, Tim Übelhör, jack
+
+ -- Jim Vaughan <jimv@mrjim.com>  Thu, 09 May 2019 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.10.0-1xenial) xenial; urgency=high
+
+  * Dramatically speed up create_markers using cairosvg and joblib
+  * Overhaul aruco marker generation (calculate svg values)
+  * Ddd new 2 tag test image
+  * Add params to ignore some fiducial Ids and override sizes
+  * Contributors: Jim Vaughan, Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sat, 13 Oct 2018 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.9.0-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Wed, 12 Sep 2018 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.8.4-1xenial) xenial; urgency=high
+
+  * Use publish_images param as intended (#106 <https://github.com/UbiquityRobotics/fiducials/issues/106>)
+  * Update README.md
+  * Contributors: Jim Vaughan
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sun, 26 Aug 2018 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.8.3-1xenial) xenial; urgency=high
+
+  * Merge pull request #100 <https://github.com/UbiquityRobotics/fiducials/issues/100> from alex-gee/kinetic-devel
+  * Add dictionary parameter to launch file
+  * Contributors: Alexander Gutenkunst, Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Mon, 26 Feb 2018 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.8.2-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Wed, 14 Feb 2018 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.8.1-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sun, 21 Jan 2018 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.8.0-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sun, 14 Jan 2018 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.5-1xenial) xenial; urgency=high
+
+  * Move create_markers.py to share directory
+  * Make corner detection on by default.
+  * Contributors: Jim Vaughan
+
+ -- Jim Vaughan <jimv@mrjim.com>  Wed, 06 Dec 2017 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.4-1xenial) xenial; urgency=high
+
+  * Add std=-c++-11 to build.
+  * Fixes for OpenCV 3.3.1
+  * handle invalid cameraInfo message in aruco_detect
+  * Added (multi) pose estimation to fiducial_slam (disabled by default)
+  * Contributors: Jim Vaughan, Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Thu, 09 Nov 2017 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.3-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sun, 16 Jul 2017 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.2-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Wed, 24 May 2017 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.1-1xenial) xenial; urgency=high
+
+
+
+ -- Jim Vaughan <jimv@mrjim.com>  Mon, 22 May 2017 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.7.0-1xenial) xenial; urgency=high
+
+  * Fix dependencies
+  * Added image and object error calculation. Renamed K and dist
+  * Moved all service and message definitions to fiducial_msgs
+  * Update copyright on aruco detect C++
+  * Contributors: Jim Vaughan, Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sun, 21 May 2017 07:00:00 -0000
+
+ros-kinetic-aruco-detect (0.6.1-1xenial) xenial; urgency=high
+
+  * Fix dynamic_reconfigure build deps
+  * Contributors: Jim Vaughan
+
+ -- Jim Vaughan <jimv@mrjim.com>  Mon, 06 Feb 2017 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.6.0-1xenial) xenial; urgency=high
+
+  * moved documentation to ROS wiki
+  * added utilities to generate PDF files of fiducials
+  * Expose aruco detection parameters
+  * Publish one set of fiducial_vertices per image
+  * Parameterized the dictionary used
+  * Contributors: Jim Vaughan, Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Sat, 04 Feb 2017 08:00:00 -0000
+
+ros-kinetic-aruco-detect (0.5.1-1xenial) xenial; urgency=high
+
+  * Install aruco_detect launch dir
+  * Use raw transport for aruco test
+  * Contributors: Rohan Agrawal
+
+ -- Jim Vaughan <jimv@mrjim.com>  Wed, 28 Dec 2016 08:00:00 -0000
+
+
