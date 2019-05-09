@@ -1,0 +1,12 @@
+Source: ros-melodic-fiducials
+Section: misc
+Priority: extra
+Maintainer: Jim Vaughan <jimv@mrjim.com>
+Build-Depends: debhelper (>= 9.0.0), ros-melodic-catkin
+Homepage: http://wiki.ros.org/fiducials
+Standards-Version: 3.9.2
+
+Package: ros-melodic-fiducials
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-melodic-aruco-detect, ros-melodic-fiducial-msgs, ros-melodic-fiducial-slam
+Description: Localization using fiducial markers
