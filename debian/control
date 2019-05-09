@@ -1,0 +1,12 @@
+Source: ros-melodic-aruco-detect
+Section: misc
+Priority: extra
+Maintainer: Jim Vaughan <jimv@mrjim.com>
+Build-Depends: debhelper (>= 9.0.0), python-cairosvg, python-joblib, ros-melodic-catkin, ros-melodic-cv-bridge, ros-melodic-dynamic-reconfigure, ros-melodic-fiducial-msgs, ros-melodic-image-transport, ros-melodic-roscpp, ros-melodic-sensor-msgs, ros-melodic-tf2, ros-melodic-tf2-geometry-msgs, ros-melodic-tf2-ros, ros-melodic-visualization-msgs
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-melodic-aruco-detect
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python-cairosvg, python-joblib, ros-melodic-cv-bridge, ros-melodic-dynamic-reconfigure, ros-melodic-fiducial-msgs, ros-melodic-image-transport, ros-melodic-roscpp, ros-melodic-sensor-msgs, ros-melodic-tf2, ros-melodic-tf2-geometry-msgs, ros-melodic-tf2-ros, ros-melodic-visualization-msgs
+Description: Fiducial detection based on the aruco library
