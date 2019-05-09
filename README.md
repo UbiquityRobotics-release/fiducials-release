@@ -1,3 +1,30 @@
+## fiducials (melodic) - 0.11.0-1
+
+The packages in the `fiducials` repository were released into the `melodic` distro by running `/usr/bin/bloom-release -r melodic -t melodic fiducials` on `Thu, 09 May 2019 20:27:26 -0000`
+
+These packages were released:
+- `aruco_detect`
+- `fiducial_msgs`
+- `fiducial_slam`
+- `fiducials`
+
+Version of package(s) in repository `fiducials`:
+
+- upstream repository: https://github.com/UbiquityRobotics/fiducials
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.11.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.8.0`
+- catkin_pkg version: `0.4.12`
+- rosdep version: `0.15.1`
+- rosdistro version: `0.7.4`
+- vcstools version: `0.1.40`
+
+
 ## fiducials (kinetic) - 0.11.0-1
 
 The packages in the `fiducials` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release -r kinetic -t kinetic fiducials` on `Thu, 09 May 2019 20:20:15 -0000`
