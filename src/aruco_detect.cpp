@@ -45,6 +45,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <dynamic_reconfigure/server.h>
+#include <std_srvs/SetBool.h>
 
 #include "fiducial_msgs/Fiducial.h"
 #include "fiducial_msgs/FiducialArray.h"
@@ -72,8 +73,11 @@ class FiducialsNode {
     image_transport::ImageTransport it;
     image_transport::Subscriber img_sub;
 
+    ros::ServiceServer service_enable_detections;
+
     // if set, we publish the images that contain fiducials
     bool publish_images;
+    bool enable_detections;
 
     double fiducial_len;
 
@@ -85,7 +89,6 @@ class FiducialsNode {
     std::string frameId;
     std::vector<int> ignoreIds;
     std::map<int, double> fiducialLens;
-
 
     image_transport::Publisher image_pub;
 
@@ -104,6 +107,9 @@ class FiducialsNode {
     void imageCallback(const sensor_msgs::ImageConstPtr &msg);
     void camInfoCallback(const sensor_msgs::CameraInfo::ConstPtr &msg);
     void configCallback(aruco_detect::DetectorParamsConfig &config, uint32_t level);
+
+    bool enableDetectionsCallback(std_srvs::SetBool::Request &req,
+                                std_srvs::SetBool::Response &res);
 
     dynamic_reconfigure::Server<aruco_detect::DetectorParamsConfig> configServer;
     dynamic_reconfigure::Server<aruco_detect::DetectorParamsConfig>::CallbackType callbackType;
@@ -184,7 +190,7 @@ static double getReprojectionError(const vector<Point3f> &objectPoints,
         double error = dist(imagePoints[i], projectedPoints[i]);
         totalError += error*error;
     }
-    double rerror = totalError/objectPoints.size();
+    double rerror = totalError/(double)objectPoints.size();
     return rerror;
 }
 
@@ -238,7 +244,7 @@ void FiducialsNode::configCallback(aruco_detect::DetectorParamsConfig & config, 
     detectorParams->cornerRefinementMaxIterations = config.cornerRefinementMaxIterations;
     detectorParams->cornerRefinementMinAccuracy = config.cornerRefinementMinAccuracy;
     detectorParams->cornerRefinementWinSize = config.cornerRefinementWinSize;
-#if OPENCV_MINOR_VERSION==2
+#if CV_MINOR_VERSION==2
     detectorParams->doCornerRefinement = config.doCornerRefinement;
 #else
     if (config.doCornerRefinement) {
@@ -293,6 +299,10 @@ void FiducialsNode::camInfoCallback(const sensor_msgs::CameraInfo::ConstPtr& msg
 }
 
 void FiducialsNode::imageCallback(const sensor_msgs::ImageConstPtr & msg) {
+    if (enable_detections == false) {
+        return; //return without doing anything
+    }
+
     ROS_INFO("Got image %d", msg->header.seq);
     frameNum++;
 
@@ -318,7 +328,11 @@ void FiducialsNode::imageCallback(const sensor_msgs::ImageConstPtr & msg) {
         aruco::detectMarkers(cv_ptr->image, dictionary, corners, ids, detectorParams);
         ROS_INFO("Detected %d markers", (int)ids.size());
 
-        for (int i=0; i<ids.size(); i++) {
+        for (size_t i=0; i<ids.size(); i++) {
+	    if (std::count(ignoreIds.begin(), ignoreIds.end(), ids[i]) != 0) {
+	        ROS_INFO("Ignoring id %d", ids[i]);
+	        continue;
+	    }
             fiducial_msgs::Fiducial fid;
             fid.fiducial_id = ids[i];
 
@@ -348,14 +362,14 @@ void FiducialsNode::imageCallback(const sensor_msgs::ImageConstPtr & msg) {
             }
 
             vector <double>reprojectionError;
-            estimatePoseSingleMarkers(ids, corners, fiducial_len,
+            estimatePoseSingleMarkers(ids, corners, (float)fiducial_len,
                                       cameraMatrix, distortionCoeffs,
                                       rvecs, tvecs,
                                       reprojectionError);
 
-            for (int i=0; i<ids.size(); i++) {
+            for (size_t i=0; i<ids.size(); i++) {
                 aruco::drawAxis(cv_ptr->image, cameraMatrix, distortionCoeffs,
-                                rvecs[i], tvecs[i], fiducial_len);
+                                rvecs[i], tvecs[i], (float)fiducial_len);
 
                 ROS_INFO("Detected id %d T %.2f %.2f %.2f R %.2f %.2f %.2f", ids[i],
                          tvecs[i][0], tvecs[i][1], tvecs[i][2],
@@ -411,6 +425,23 @@ void FiducialsNode::imageCallback(const sensor_msgs::ImageConstPtr & msg) {
     }
 }
 
+bool FiducialsNode::enableDetectionsCallback(std_srvs::SetBool::Request &req,
+                                std_srvs::SetBool::Response &res)
+{
+    enable_detections = req.data;
+    if (enable_detections){
+        res.message = "Enabled aruco detections.";
+        ROS_INFO("Enabled aruco detections.");
+    }
+    else {
+        res.message = "Disabled aruco detections.";
+        ROS_INFO("Disabled aruco detections.");
+    }
+    
+    res.success = true;
+    return true;
+}
+
 FiducialsNode::FiducialsNode(ros::NodeHandle & nh) : it(nh)
 {
     frameNum = 0;
@@ -422,6 +453,7 @@ FiducialsNode::FiducialsNode(ros::NodeHandle & nh) : it(nh)
     distortionCoeffs = cv::Mat::zeros(1, 5, CV_64F);
 
     haveCamInfo = false;
+    enable_detections = true;
 
     int dicno;
 
@@ -506,7 +538,6 @@ FiducialsNode::FiducialsNode(ros::NodeHandle & nh) : it(nh)
 
     image_pub = it.advertise("/fiducial_images", 1);
 
-
     vertices_pub = new ros::Publisher(nh.advertise<fiducial_msgs::FiducialArray>("/fiducial_vertices", 1));
 
     pose_pub = new ros::Publisher(nh.advertise<fiducial_msgs::FiducialTransformArray>("/fiducial_transforms", 1));
@@ -514,10 +545,13 @@ FiducialsNode::FiducialsNode(ros::NodeHandle & nh) : it(nh)
     dictionary = aruco::getPredefinedDictionary(dicno);
 
     img_sub = it.subscribe("/camera", 1,
-                           &FiducialsNode::imageCallback, this);
+                        &FiducialsNode::imageCallback, this);
 
     caminfo_sub = nh.subscribe("/camera_info", 1,
-			       &FiducialsNode::camInfoCallback, this);
+                    &FiducialsNode::camInfoCallback, this);
+
+    service_enable_detections = nh.advertiseService("enable_detections",
+                        &FiducialsNode::enableDetectionsCallback, this);
 
     callbackType = boost::bind(&FiducialsNode::configCallback, this, _1, _2);
     configServer.setCallback(callbackType);
@@ -529,7 +563,7 @@ FiducialsNode::FiducialsNode(ros::NodeHandle & nh) : it(nh)
     nh.param<int>("cornerRefinementMaxIterations", detectorParams->cornerRefinementMaxIterations, 30);
     nh.param<double>("cornerRefinementMinAccuracy", detectorParams->cornerRefinementMinAccuracy, 0.01); /* default 0.1 */
     nh.param<int>("cornerRefinementWinSize", detectorParams->cornerRefinementWinSize, 5);
-#if OPENCV_MINOR_VERSION==2
+#if CV_MINOR_VERSION==2
     nh.param<bool>("doCornerRefinement",detectorParams->doCornerRefinement, true); /* default false */
 #else
     bool doCornerRefinement = true;
