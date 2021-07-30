@@ -1,3 +1,30 @@
+## fiducials (noetic) - 0.12.0-1
+
+The packages in the `fiducials` repository were released into the `noetic` distro by running `/usr/bin/bloom-release fiducials --rosdistro noetic --new-track` on `Fri, 30 Jul 2021 17:44:04 -0000`
+
+These packages were released:
+- `aruco_detect`
+- `fiducial_msgs`
+- `fiducial_slam`
+- `fiducials`
+
+Version of package(s) in repository `fiducials`:
+
+- upstream repository: https://github.com/UbiquityRobotics/fiducials
+- release repository: unknown
+- rosdistro version: `null`
+- old version: `null`
+- new version: `0.12.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.10.7`
+- catkin_pkg version: `0.4.23`
+- rosdep version: `0.21.0`
+- rosdistro version: `0.8.3`
+- vcstools version: `0.1.42`
+
+
 ## fiducials (melodic) - 0.11.0-1
 
 The packages in the `fiducials` repository were released into the `melodic` distro by running `/usr/bin/bloom-release -r melodic -t melodic fiducials` on `Thu, 09 May 2019 20:27:26 -0000`
