@@ -8,6 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf2_ros
   tf2
   visualization_msgs
+  vision_msgs
   image_transport
   cv_bridge
   sensor_msgs
@@ -17,6 +18,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(OpenCV REQUIRED)
+
+# Python Setup
+catkin_python_setup()
 
 generate_dynamic_reconfigure_options(cfg/DetectorParams.cfg)
 
@@ -50,7 +54,7 @@ install(TARGETS aruco_detect
 )
 
 catkin_install_python(PROGRAMS scripts/create_markers.py
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 install(DIRECTORY launch/
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
