@@ -1,0 +1,12 @@
+Source: ros-noetic-fiducials
+Section: misc
+Priority: optional
+Maintainer: Jim Vaughan <jimv@mrjim.com>
+Build-Depends: debhelper (>= 9.0.0), ros-noetic-catkin
+Homepage: http://wiki.ros.org/fiducials
+Standards-Version: 3.9.2
+
+Package: ros-noetic-fiducials
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-noetic-aruco-detect, ros-noetic-fiducial-msgs, ros-noetic-fiducial-slam
+Description: Localization using fiducial markers
